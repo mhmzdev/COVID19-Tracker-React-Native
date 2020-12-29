@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Constants from 'expo-constants';
+import { useFonts } from 'expo-font';
 import { useState, useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import {
@@ -51,6 +52,14 @@ export default function Country({ navigation }) {
   function formatResult(num) {
     return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
+
+  let [fontsLoaded] = useFonts({
+    Langar: require('./assets/fonts/Langar.ttf'),
+  });
+
+  let [googleFonts] = useFonts({
+    GoogleFonts: require('./assets/fonts/GoogleSans.ttf'),
+  });
 
   function CountrySubFtn() {
     return (

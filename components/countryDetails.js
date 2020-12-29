@@ -1,9 +1,11 @@
 import * as React from 'react';
+import { useFonts } from 'expo-font';
 import {
   Text,
   View,
   StyleSheet,
 } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function CountryDetails({ navigation, route }) {
   const countryData = route.params.countryDataObj;
@@ -17,17 +19,26 @@ export default function CountryDetails({ navigation, route }) {
     );
   }
 
+  let [fontsLoaded] = useFonts({
+    Langar: require('./assets/fonts/Langar.ttf'),
+  });
+
+  let [googleFonts] = useFonts({
+    GoogleFonts: require('./assets/fonts/GoogleSans.ttf'),
+  });
+
   function formatResult(num) {
     return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
 
   if (!fontsLoaded) {
-    return <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}><Text>Loading</Text></View>
+    return <View style={{ backgroundColor: 'black', alignItems: 'center', justifyContent: 'center', flex: 1 }}><Text>Loading</Text></View>
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.countryName}>{countryData.country}</Text>
-      <View style={{ paddingTop: 10 }} />
+      <TouchableOpacity onPress={() => { }} style={{ padding: 30, justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={styles.countryName}>{countryData.country}</Text>
+      </TouchableOpacity>
       <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
         <ResultCard
           resultType={'Cases'}
@@ -79,26 +90,34 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 5,
-    paddingLeft: 8,
-    paddingRight: 8,
+    paddingLeft: 10,
+    paddingRight: 10,
+    backgroundColor: 'black'
   },
   countryName: {
     fontSize: 32,
-    fontFamily: 'GoogleFonts',
+    fontFamily: 'Langar',
+    color: 'white',
+    letterSpacing: 3
   },
   resultCard: {
-    elevation: 3.0,
-    borderRadius: 5,
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
     height: 100,
     width: 160,
+    borderColor: 'white',
+    borderWidth: 1
   },
   resultType: {
-    fontWeight: 'bold',
-    fontSize: 20,
+    fontFamily: 'GoogleFonts',
+    fontSize: 16,
+    color: 'white',
+    fontWeight: '100'
   },
   stats: {
-    fontSize: 18,
+    fontSize: 20,
+    color: 'white',
+    fontWeight: 'bold'
   },
 });
