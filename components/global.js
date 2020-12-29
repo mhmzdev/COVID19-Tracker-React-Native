@@ -1,9 +1,6 @@
 import * as React from 'react';
-import * as Font from 'expo-font';
 import { useState, useEffect } from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useFonts } from 'expo-font';
-import { NavigationContainer } from '@react-navigation/native';
 
 import {
   Text,
@@ -14,6 +11,7 @@ import {
 } from 'react-native';
 
 export default function Global({ navigation, route }) {
+
   const [data, setData] = useState();
   const [isLoading, setLoading] = useState(true);
 
@@ -44,15 +42,17 @@ export default function Global({ navigation, route }) {
   }
 
   if (!fontsLoaded || !googleFonts) {
-    return <View style={{ alignContent: 'center', justifyContent: 'center', flex: 1 }}><Text>Loading</Text></View>
+    return <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}><Text>Loading</Text></View>
   }
   return (
     <View style={styles.container}>
+      <View style={{ padding: 25 }} />
       <View
         style={{
           justifyContent: 'space-evenly',
           alignItems: 'center',
           flexDirection: 'row',
+
         }}>
         <Image
           style={styles.mainImage}
@@ -71,10 +71,11 @@ export default function Global({ navigation, route }) {
         <View
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <ActivityIndicator color="red" />
+          <View style={{ paddingTop: 8 }} />
           <Text style={{ color: 'white' }}>Loading Global Stats...</Text>
         </View>
       ) : (
-          <View style={{ paddingTop: 10 }}>
+          <View style={{ paddingTop: 20 }}>
             <View style={styles.customCards}>
               <View>
                 <Text style={styles.customCardsText}>Total Cases</Text>
@@ -134,12 +135,12 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 25,
     paddingRight: 25,
-    backgroundColor: 'black',
+    backgroundColor: 'black'
   },
   globalTextView: {
     justifyContent: 'center',
     alignContent: 'center',
-    marginTop: 20,
+    marginTop: 25,
     flexDirection: 'row',
   },
   appNameText: {
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
   },
   customCards: {
     height: 85,
-    marginTop: 8,
+    marginTop: 15,
     backgroundColor: '#3498DB',
     borderRadius: 10,
     elevation: 4.0,

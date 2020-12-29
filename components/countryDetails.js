@@ -1,27 +1,12 @@
 import * as React from 'react';
-import Constants from 'expo-constants';
-import { useState, useEffect } from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { useFonts } from 'expo-font';
-import * as Font from 'expo-font';
-import { NavigationContainer } from '@react-navigation/native';
 import {
   Text,
   View,
   StyleSheet,
-  ActivityIndicator,
-  FlatList,
-  Button,
-  Image,
-  TouchableOpacity,
 } from 'react-native';
 
 export default function CountryDetails({ navigation, route }) {
-  const {countryData} = route.params.countryDataObj;
-
-  let [fontsLoaded] = useFonts({
-    Langar: require('./assets/fonts/Langar.ttf'),
-  });
+  const countryData = route.params.countryDataObj;
 
   function ResultCard({ resultType, stats }) {
     return (
@@ -36,6 +21,9 @@ export default function CountryDetails({ navigation, route }) {
     return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
 
+  if (!fontsLoaded) {
+    return <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}><Text>Loading</Text></View>
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.countryName}>{countryData.country}</Text>
@@ -96,7 +84,7 @@ const styles = StyleSheet.create({
   },
   countryName: {
     fontSize: 32,
-    fontFamily: 'Google',
+    fontFamily: 'GoogleFonts',
   },
   resultCard: {
     elevation: 3.0,

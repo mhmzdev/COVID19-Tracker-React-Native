@@ -1,25 +1,23 @@
 import * as React from 'react';
 import Constants from 'expo-constants';
 import { useState, useEffect } from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { useFonts } from 'expo-font';
-import * as Font from 'expo-font';
-import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import {
   Text,
   View,
   StyleSheet,
   ActivityIndicator,
   FlatList,
-  Button,
-  Image,
   TouchableOpacity,
 } from 'react-native';
 
-import Global from './global';
+import Global from './global'
 import CountryDetails from './countryDetails'
 
+const Stack = createStackNavigator();
+
 export default function Country({ navigation }) {
+
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
@@ -35,11 +33,11 @@ export default function Country({ navigation }) {
       .finally(() => setLoading(false));
   }, []);
 
-  function CountryCard({navigation, countryName, countryCase, countryDetailsObj }) {
+  function CountryCard({ navigation, countryName, countryCase, countryDetailsObj }) {
     return (
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('CountryDetails', {
+          navigation.navigate('Country Details', {
             countryDataObj: countryDetailsObj,
           });
         }}
@@ -54,33 +52,46 @@ export default function Country({ navigation }) {
     return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
 
-  let [fontsLoaded] = useFonts({
-    Langar: require('./assets/fonts/Langar.ttf'),
-  });
+  function CountrySubFtn() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.headingText}>Countries Stats</Text>
+        <View style={{ paddingTop: 8 }} />
+
+        {isLoading == true ? (
+          <View
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <ActivityIndicator color="red" />
+            <View style={{ paddingTop: 8 }} />
+            <Text style={{ color: 'white' }}>Loading Country Stats...</Text>
+          </View>
+        ) : (
+            <FlatList
+              data={countriesObj}
+              renderItem={({ item }) => {
+                return (
+                  <CountryCard
+                    navigation={navigation}
+                    countryDetailsObj={item}
+                    countryName={item.country}
+                    countryCase={formatResult(item.cases)}
+                  />
+                );
+              }}
+              keyExtractor={(item) => item.country}
+            />
+          )}
+      </View>
+    );
+  }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.headingText}>Countries Stats</Text>
-      <View style={{ paddingTop: 8 }} />
-      {isLoading == true ? (
-        <ActivityIndicator color="red" />
-      ) : (
-        <FlatList
-          data={countriesObj}
-          renderItem={({ item }) => {
-            return (
-              <CountryCard
-              navigation={navigation}
-                countryDetailsObj={item}
-                countryName={item.country}
-                countryCase={formatResult(item.cases)}
-              />
-            );
-          }}
-          keyExtractor={(item) => item.country}
-        />
-      )}
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen name="Country" component={CountrySubFtn} options={{
+        headerShown: false
+      }} />
+      <Stack.Screen name="Country Details" component={CountryDetails} />
+    </Stack.Navigator>
   );
 }
 
@@ -88,14 +99,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Constants.statusBarHeight,
-    paddingLeft: 8,
-    paddingRight: 8,
+    paddingLeft: 15,
+    paddingRight: 15,
+    backgroundColor: 'black'
   },
   headingText: {
     fontFamily: 'Langar',
     fontSize: 30,
     letterSpacing: 4,
     paddingTop: 10,
+    color: 'white'
   },
   countryCard: {
     alignItems: 'center',
@@ -107,11 +120,15 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     marginTop: 8,
+    borderColor: 'white',
+    borderWidth: 1
   },
   countryNameText: {
     fontSize: 22,
+    color: 'white'
   },
   countryResultText: {
     fontSize: 18,
+    color: 'white'
   },
 });
