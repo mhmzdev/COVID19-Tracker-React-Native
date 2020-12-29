@@ -4,11 +4,17 @@ import {
   Text,
   View,
   StyleSheet,
+
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Saved from './saved';
+import { useState } from 'react';
+import { add } from 'react-native-reanimated';
 
 export default function CountryDetails({ navigation, route }) {
   const countryData = route.params.countryDataObj;
+  const [addSave, setAddSave] = useState(false);
 
   function ResultCard({ resultType, stats }) {
     return (
@@ -31,14 +37,22 @@ export default function CountryDetails({ navigation, route }) {
     return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
 
+  const addToSave = () => {
+    setAddSave(!addSave)
+  }
+
   if (!fontsLoaded) {
     return <View style={{ backgroundColor: 'black', alignItems: 'center', justifyContent: 'center', flex: 1 }}><Text>Loading</Text></View>
   }
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => { }} style={{ padding: 30, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={styles.countryNameView}>
         <Text style={styles.countryName}>{countryData.country}</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => addToSave()}>
+          {!addSave ? <Ionicons name="star-outline" size={32} color="white" /> : <Ionicons name="star" size={32} color="white" />}
+        </TouchableOpacity>
+      </View>
+
       <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
         <ResultCard
           resultType={'Cases'}
@@ -99,6 +113,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Langar',
     color: 'white',
     letterSpacing: 3
+  },
+  countryNameView: {
+    padding: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly'
   },
   resultCard: {
     borderRadius: 10,
