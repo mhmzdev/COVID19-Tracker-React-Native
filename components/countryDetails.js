@@ -10,7 +10,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Saved from './saved';
 import { useState } from 'react';
-import { add } from 'react-native-reanimated';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CountryDetails({ navigation, route }) {
   const countryData = route.params.countryDataObj;
@@ -37,8 +37,34 @@ export default function CountryDetails({ navigation, route }) {
     return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
 
-  const addToSave = () => {
-    setAddSave(!addSave)
+  const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      console.log(value.country)
+      await AsyncStorage.setItem(value.country, jsonValue);
+      // console.log(jsonValue.country + " Stored!")
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const removeData = async (value) => {
+    try {
+      await AsyncStorage.removeItem(value.country);
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const addToSave = (value) => {
+    if (!addSave) {
+      storeData(value);
+      setAddSave(!addSave);
+    }
+    else {
+      removeData(value);
+      setAddSave(!addSave);
+    }
   }
 
   if (!fontsLoaded) {
@@ -48,7 +74,7 @@ export default function CountryDetails({ navigation, route }) {
     <View style={styles.container}>
       <View style={styles.countryNameView}>
         <Text style={styles.countryName}>{countryData.country}</Text>
-        <TouchableOpacity onPress={() => addToSave()}>
+        <TouchableOpacity onPress={() => addToSave(countryData)}>
           {!addSave ? <Ionicons name="star-outline" size={32} color="white" /> : <Ionicons name="star" size={32} color="white" />}
         </TouchableOpacity>
       </View>
