@@ -10,7 +10,7 @@ import {
   Image,
 } from 'react-native';
 
-export default function Global({ navigation, route }) {
+export default function Global() {
 
   const [data, setData] = useState();
   const [isLoading, setLoading] = useState(true);

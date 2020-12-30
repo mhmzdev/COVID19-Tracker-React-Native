@@ -9,12 +9,21 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Saved from './saved';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function CountryDetails({ navigation, route }) {
+export default function CountryDetails({ route }) {
   const countryData = route.params.countryDataObj;
-  const [addSave, setAddSave] = useState(false);
+  const [alreadySaved, setAlreadySaved] = useState(false);
+
+  useEffect(() => { checkSaved() }, [])
+
+  const checkSaved = async () => {
+    var isSaved = await AsyncStorage.getItem(countryData.country)
+    if (isSaved != undefined) {
+      setAlreadySaved(true)
+    }
+  }
 
   function ResultCard({ resultType, stats }) {
     return (
@@ -42,7 +51,6 @@ export default function CountryDetails({ navigation, route }) {
       const jsonValue = JSON.stringify(value);
       console.log(value.country)
       await AsyncStorage.setItem(value.country, jsonValue);
-      // console.log(jsonValue.country + " Stored!")
     } catch (e) {
       console.log(e)
     }
@@ -57,13 +65,13 @@ export default function CountryDetails({ navigation, route }) {
   }
 
   const addToSave = (value) => {
-    if (!addSave) {
+    if (!alreadySaved) {
       storeData(value);
-      setAddSave(!addSave);
+      setAlreadySaved(!alreadySaved);
     }
     else {
       removeData(value);
-      setAddSave(!addSave);
+      setAlreadySaved(!alreadySaved);
     }
   }
 
@@ -75,7 +83,7 @@ export default function CountryDetails({ navigation, route }) {
       <View style={styles.countryNameView}>
         <Text style={styles.countryName}>{countryData.country}</Text>
         <TouchableOpacity onPress={() => addToSave(countryData)}>
-          {!addSave ? <Ionicons name="star-outline" size={32} color="white" /> : <Ionicons name="star" size={32} color="white" />}
+          {!alreadySaved ? <Ionicons name="star-outline" size={32} color="white" /> : <Ionicons name="star" size={32} color="white" />}
         </TouchableOpacity>
       </View>
 

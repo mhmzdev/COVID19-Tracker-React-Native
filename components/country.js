@@ -34,6 +34,20 @@ export default function Country({ navigation }) {
       .finally(() => setLoading(false));
   }, []);
 
+  function formatResult(num) {
+    return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+  }
+
+  let [fontsLoaded] = useFonts({
+    Langar: require('./assets/fonts/Langar.ttf'),
+  });
+
+  let [googleFonts] = useFonts({
+    GoogleFonts: require('./assets/fonts/GoogleSans.ttf'),
+  });
+
+
+  // Funtional Components
   function CountryCard({ navigation, countryName, countryCase, countryDetailsObj }) {
     return (
       <TouchableOpacity
@@ -48,18 +62,6 @@ export default function Country({ navigation }) {
       </TouchableOpacity>
     );
   }
-
-  function formatResult(num) {
-    return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-  }
-
-  let [fontsLoaded] = useFonts({
-    Langar: require('./assets/fonts/Langar.ttf'),
-  });
-
-  let [googleFonts] = useFonts({
-    GoogleFonts: require('./assets/fonts/GoogleSans.ttf'),
-  });
 
   function CountrySubFtn() {
     return (
@@ -76,7 +78,7 @@ export default function Country({ navigation }) {
           </View>
         ) : (
             <FlatList
-              data={countriesObj}
+              data={countriesObj.sort((a, b) => a.country.localeCompare(b.country))}
               renderItem={({ item }) => {
                 return (
                   <CountryCard
