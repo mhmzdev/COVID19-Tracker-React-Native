@@ -49,7 +49,6 @@ export default function CountryDetails({ route }) {
   const storeData = async (value) => {
     try {
       const jsonValue = JSON.stringify(value);
-      console.log(value.country)
       await AsyncStorage.setItem(value.country, jsonValue);
     } catch (e) {
       console.log(e)

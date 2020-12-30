@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   FlatList,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 
 import Global from './global'
@@ -66,9 +67,13 @@ export default function Country({ navigation }) {
   function CountrySubFtn() {
     return (
       <View style={styles.container}>
-        <Text style={styles.headingText}>Countries Stats</Text>
-        <View style={{ paddingTop: 8 }} />
-
+        <View style={{ flexDirection: 'row', paddingTop: 20, justifyContent: 'space-evenly' }}>
+          <Image style={{ height: 100, width: 100 }} source={require('./assets/images/country.png')} />
+          <View style={{ paddingTop: 10 }}>
+            <Text style={styles.headingText}>Countries</Text>
+            <Text style={[styles.headingText, { fontFamily: 'GoogleFonts', fontSize: 14, letterSpacing: 1 }]}>Alphabetically Sorted</Text></View>
+        </View>
+        <View style={{ paddingTop: 30 }} />
         {isLoading == true ? (
           <View
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -101,7 +106,12 @@ export default function Country({ navigation }) {
       <Stack.Screen name="Country" component={CountrySubFtn} options={{
         headerShown: false
       }} />
-      <Stack.Screen name="Country Details" component={CountryDetails} />
+      <Stack.Screen name="Country Details" component={CountryDetails} options={{
+        headerStyle: {
+          backgroundColor: 'black'
+        },
+        headerTintColor: 'white'
+      }} />
     </Stack.Navigator>
   );
 }
@@ -110,15 +120,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Constants.statusBarHeight,
-    paddingLeft: 15,
-    paddingRight: 15,
+    paddingLeft: 20,
+    paddingRight: 20,
     backgroundColor: 'black'
   },
   headingText: {
     fontFamily: 'Langar',
     fontSize: 30,
     letterSpacing: 4,
-    paddingTop: 10,
     color: 'white'
   },
   countryCard: {
@@ -136,10 +145,11 @@ const styles = StyleSheet.create({
   },
   countryNameText: {
     fontSize: 22,
-    color: 'white'
+    color: 'white',
   },
   countryResultText: {
-    fontSize: 18,
-    color: 'white'
+    fontSize: 14,
+    color: 'white',
+    fontWeight: 'bold'
   },
 });

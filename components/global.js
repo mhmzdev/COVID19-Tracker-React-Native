@@ -51,13 +51,13 @@ export default function Global() {
         style={{
           justifyContent: 'space-evenly',
           alignItems: 'center',
-          flexDirection: 'row',
+          flexDirection: 'row'
 
         }}>
         <Image
           style={styles.mainImage}
           source={require('./assets/images/virus.png')}></Image>
-        <View>
+        <View style={{paddingTop: 40}}>
           <Text style={styles.appNameText}>COVID-19</Text>
           <Text style={styles.virusText}>Virus Tracking App</Text>
         </View>

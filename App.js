@@ -12,18 +12,10 @@ const Drawer = createDrawerNavigator();
 
 export default function App() {
 
-  function DrawerContent() {
-    return (
-      <View style={{
-        height: 300,
-        backgroundColor: 'red'
-      }}></View>
-    );
-  }
 
   return (
     <NavigationContainer >
-      <Drawer.Navigator  >
+      <Drawer.Navigator >
         <Drawer.Screen name="World Stats" component={Global} />
         <Drawer.Screen name="Country" component={Country} />
         <Drawer.Screen name="Saved" component={Saved} />
